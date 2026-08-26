@@ -1,69 +1,167 @@
 # Indian Career Strategy
 
-An India-first, local-first career agent for job discovery, explainable job fit, application tracking and recruiter email intelligence.
+[![CI status](https://github.com/abluvsu/indian_career_strategy/actions/workflows/ci.yml/badge.svg)](https://github.com/abluvsu/indian_career_strategy/actions/workflows/ci.yml)
 
-The product loop is:
+A free, local-first toolkit that helps you decide which jobs to pursue and understand recruiter emails. It works from Antigravity, Claude, Codex, or a regular terminal.
 
-```text
-Find jobs -> score fit -> prepare application -> user approves -> track email -> take the next action
+Your career data stays on your computer. You do not need an AI API key to use the current features.
+
+## What you can do today
+
+- Compare a job with your target roles, skills, location, work mode, experience, and salary preferences.
+- Get a fit score with clear reasons and hard-filter results.
+- Classify recruiter emails as screening, assessment, interview, offer, rejection, or general reply.
+- Match an email to a known application when the evidence is strong enough.
+- Use the same structured request from Antigravity, Claude, Codex, or your own script.
+- Keep email sending and application submission behind human approval.
+
+## Feature status
+
+| Capability | Status |
+| --- | --- |
+| Manual job import and fit scoring | Ready |
+| Recruiter email classification from JSON | Ready |
+| Email-to-application matching | Ready |
+| Cross-platform agent protocol | Ready |
+| Application state rules | Ready |
+| Live Gmail synchronization | Planned |
+| SQLite application history | Planned |
+| Live job-board connectors | Planned |
+| Resume and outreach generation | Planned |
+| Dashboard | Planned |
+
+The project does not currently send email, submit applications, or connect directly to Gmail or job boards.
+
+## Five-minute start
+
+You need [Node.js 22 or newer](https://nodejs.org/) and Git.
+
+```bash
+git clone https://github.com/abluvsu/indian_career_strategy.git
+cd indian_career_strategy
+npm install
+npm run check
+npm run demo
 ```
 
-## What works in this release
+The demo prints a JSON result containing:
 
-This first public release contains the provider-independent core:
+- `score`: job-fit score from 0 to 100
+- `decision`: `shortlist`, `review`, or `skip`
+- `confidence`: confidence from 0 to 1
+- `hardFilters`: location, experience, salary, and company checks
+- `reasons`: a plain-language explanation of the score
 
-- Normalizes imported job descriptions into a stable job record.
-- Applies configurable location, work-mode, experience, salary and company filters.
-- Produces an explainable fit score with confidence and reasons.
-- Classifies recruiter messages into interview, screening, assessment, offer and rejection events.
-- Matches email events to applications only when confidence is sufficient.
-- Enforces a typed application state machine.
-- Keeps external actions behind human approval boundaries.
+For Windows, macOS, Linux, and first-profile instructions, read [Getting Started](docs/GETTING_STARTED.md).
 
-The core works without an AI API key. Live job-source connectors, Gmail OAuth and generated application documents are planned adapters and are not falsely presented as complete in v0.1.
+## Use your own profile
 
-## Use it with any agent host
+1. Copy `examples/profile.example.json` to `profile.json`.
+2. Replace the example values with your preferences and skills.
+3. Keep `profile.json` local. Git already ignores it.
+4. Save a job description as JSON using `examples/sample-job.json` as the guide.
+5. Run the scoring command.
 
-The package exposes a versioned JSON protocol instead of a vendor-specific prompt or memory system. This makes it usable from Antigravity, Claude, Codex, a local script or another orchestration layer.
+```bash
+npm run dev -- score-job path/to/job.json profile.json
+```
+
+Better input produces better output. Include the complete job description, honest skills, realistic experience, preferred locations, and salary constraints. See [How to Prepare Your Inputs](docs/INPUT_GUIDE.md).
+
+## Use it from an agent platform
+
+| Platform | Instructions |
+| --- | --- |
+| Antigravity | Read `AGENTS.md` and `ANTIGRAVITY.md` |
+| Claude | Read `CLAUDE.md` |
+| Codex | Read `AGENTS.md` and `CODEX.md` |
+| Other agents or scripts | Read `integrations/UNIVERSAL_WORKFLOW.md` |
+
+Paste this into your agent after opening the repository:
+
+```text
+Read AGENTS.md and integrations/UNIVERSAL_WORKFLOW.md.
+Use my local profile.json and the job file I provide.
+Run the score_job workflow, preserve confidence and warnings,
+and explain the result in plain language. Do not send emails or submit applications.
+```
+
+Detailed platform walkthroughs are in [Agent Platform Guides](docs/PLATFORM_GUIDES.md).
+
+## Use the shared agent protocol
+
+The package accepts a versioned JSON request. A JSON protocol is a predictable input and output format that any agent can call.
 
 ```bash
 npm run protocol:describe
-npm run dev -- run request.json
-# Or stream a request from another host
-npm run build
-cat request.json | node dist/cli/index.js run --stdin
+npm run dev -- run examples/score-request.example.json
 ```
 
-The protocol supports `score_job` and `match_email`. Each response preserves the request ID, confidence, warnings and approval flag. See [AGENTS.md](AGENTS.md), [CLAUDE.md](CLAUDE.md), [CODEX.md](CODEX.md), [schemas/agent-request.schema.json](schemas/agent-request.schema.json) and [integrations/UNIVERSAL_WORKFLOW.md](integrations/UNIVERSAL_WORKFLOW.md).
-
-The host platform owns conversation history, credentials, scheduling, consent and presentation. This package owns deterministic career decisions and must not send email or submit applications.
-
-## Quick start
+Streaming hosts can send one request through standard input:
 
 ```bash
-npm install
-npm run check
-npm run dev -- score-job examples/sample-job.json examples/profile.example.json
-npm run dev -- match-email examples/sample-email.json examples/applications.example.json
+npm run build
+cat examples/score-request.example.json | node dist/cli/index.js run --stdin
 ```
 
-Use `profile.example.json` as a template. Create your own local `profile.json`; it is ignored by Git.
+PowerShell equivalent:
 
-## Design principles
+```powershell
+Get-Content examples/score-request.example.json | node dist/cli/index.js run --stdin
+```
 
-- Local-first storage for personal career data.
-- Human approval before sending email, submitting an application, changing application status or publishing an artifact.
-- Evidence-backed writing with no invented claims.
-- Deterministic filters and state transitions around optional AI agents.
-- Confidence-aware automation: uncertain decisions enter a review queue.
-- Provider adapters instead of hardcoded portals or model vendors.
+Request and response definitions are in `schemas/agent-request.schema.json` and `schemas/agent-response.schema.json`.
 
-## Roadmap
+## Track a recruiter email
 
-1. Add SQLite persistence and an interactive CLI.
-2. Add manual job inbox and public ATS adapters.
-3. Add Gmail read-only synchronization with encrypted local tokens.
-4. Add resume, outreach and interview artifact generators.
-5. Add the dashboard and outcome analytics.
+Try the included fictional example:
 
-See [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md), [docs/PRIVACY.md](docs/PRIVACY.md) and [docs/RELEASE_CHECKLIST.md](docs/RELEASE_CHECKLIST.md).
+```bash
+npm run demo:email
+```
+
+For your own data:
+
+```bash
+npm run dev -- match-email path/to/email.json path/to/applications.json
+```
+
+Only use email data you are authorized to process. Remove unnecessary personal information before sharing logs or bug reports.
+
+## Safety and privacy
+
+- Personal profiles, databases, tokens, and `.env` files are ignored by Git.
+- The current tools do not send email or submit applications.
+- Low-confidence email matches require review.
+- Missing profile data causes an error instead of a guessed result.
+- Examples are fictional and safe to publish.
+
+Read [Privacy](docs/PRIVACY.md) and [Security Policy](SECURITY.md) before adding a connector.
+
+## Documentation
+
+| Guide | Use it for |
+| --- | --- |
+| [Getting Started](docs/GETTING_STARTED.md) | Installation and your first successful run |
+| [Input Guide](docs/INPUT_GUIDE.md) | Preparing a strong profile, job, and email record |
+| [Platform Guides](docs/PLATFORM_GUIDES.md) | Antigravity, Claude, Codex, and other agents |
+| [Troubleshooting](docs/TROUBLESHOOTING.md) | Common errors and fixes |
+| [Architecture](docs/ARCHITECTURE.md) | System boundaries and extension points |
+| [Universal Workflow](integrations/UNIVERSAL_WORKFLOW.md) | Shared agent behavior |
+| [Contributing](CONTRIBUTING.md) | Tests and contribution rules |
+
+## Commands
+
+```text
+npm run demo                 Run the job-scoring example
+npm run demo:email           Run the email-matching example
+npm run check                Build and run all tests
+npm run protocol:describe    Print supported agent tasks
+npm run dev -- score-job     Score a job against a profile
+npm run dev -- match-email   Match an email to applications
+npm run dev -- run           Execute a protocol request
+```
+
+## License
+
+MIT. You may use, modify, and distribute this project. See [LICENSE](LICENSE).

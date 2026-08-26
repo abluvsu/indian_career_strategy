@@ -1,19 +1,18 @@
 # Career Strategy Agent Contract
 
-This repository is platform-neutral. Antigravity, Codex, Claude and other agent hosts must use the same local command and JSON protocol.
+This repository is platform-neutral. Antigravity, Codex, Claude, and other agent hosts use the same local command and JSON protocol.
 
 ## Invocation
 
-Run `npm install` once, then use:
+Run these commands before handling user data:
 
 ```bash
 npm run build
 npm run protocol:describe
 npm run dev -- run request.json
-# Streaming hosts can pipe JSON instead.
-npm run build
-cat request.json | node dist/cli/index.js run --stdin
 ```
+
+Streaming hosts can pipe one complete JSON request to `node dist/cli/index.js run --stdin` after the build.
 
 The request must use `schemaVersion: "career-strategy.agent.v1"`. Store personal profiles, applications, messages, tokens and generated artifacts outside Git or in ignored local files.
 
@@ -26,4 +25,4 @@ The request must use `schemaVersion: "career-strategy.agent.v1"`. Store personal
 - Do not invent candidate evidence or silently fill missing profile data.
 - Surface warnings and low-confidence results to the user.
 
-The host agent may add presentation, memory or scheduling around this contract, but must not rewrite domain results or hide failures.
+The host agent may add presentation, memory, or scheduling around this contract. It must not rewrite domain results or hide failures. User-facing setup and examples are in `README.md` and `docs/PLATFORM_GUIDES.md`.

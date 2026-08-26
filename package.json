@@ -1,14 +1,37 @@
 {
   "name": "indian-career-strategy",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "private": false,
   "description": "India-first, local-first job search and email tracking agent foundation.",
   "type": "module",
+  "homepage": "https://github.com/abluvsu/indian_career_strategy#readme",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/abluvsu/indian_career_strategy.git"
+  },
+  "bugs": {
+    "url": "https://github.com/abluvsu/indian_career_strategy/issues"
+  },
+  "keywords": [
+    "career",
+    "job-search",
+    "email-tracker",
+    "agent",
+    "india",
+    "claude",
+    "codex"
+  ],
+  "engines": {
+    "node": ">=22"
+  },
   "files": [
     "dist",
+    "docs",
+    "examples",
     "schemas",
     "integrations",
     "AGENTS.md",
+    "ANTIGRAVITY.md",
     "CLAUDE.md",
     "CODEX.md",
     "README.md",
@@ -25,9 +48,12 @@
   "scripts": {
     "build": "tsc -p tsconfig.json",
     "test": "vitest run",
-    "check": "npm run build && npm test",
+    "check": "npm run build && npm test && npm run docs:check",
     "dev": "tsx src/cli/index.ts",
-    "protocol:describe": "tsx src/cli/index.ts describe"
+    "protocol:describe": "tsx src/cli/index.ts describe",
+    "demo": "tsx src/cli/index.ts run examples/score-request.example.json",
+    "demo:email": "tsx src/cli/index.ts run examples/email-request.example.json",
+    "docs:check": "node scripts/check-doc-links.mjs"
   },
   "devDependencies": {
     "@types/node": "^22.0.0",
