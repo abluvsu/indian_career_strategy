@@ -1,0 +1,13 @@
+{
+  "title": "Product Analyst",
+  "company": "Example Technologies",
+  "location": "Bengaluru",
+  "workMode": "hybrid",
+  "description": "Own product analytics, build SQL models, partner with product managers and design experiments that improve activation.",
+  "skills": ["SQL", "product analytics", "experimentation"],
+  "experienceMinYears": 2,
+  "salaryMinInr": 1400000,
+  "salaryMaxInr": 1800000,
+  "source": "manual",
+  "applyUrl": "https://example.com/jobs/product-analyst"
+}

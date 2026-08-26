@@ -1,0 +1,9 @@
+{
+  "targetRoles": ["Product Analyst", "Business Analyst"],
+  "locations": ["Bengaluru", "Mumbai", "Remote"],
+  "workModes": ["hybrid", "remote"],
+  "skills": ["SQL", "analytics", "stakeholder management", "experimentation"],
+  "experienceYears": 3,
+  "minimumSalaryInr": 1200000,
+  "excludedCompanies": []
+}

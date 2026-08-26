@@ -1,0 +1,9 @@
+{
+  "id": "message-001",
+  "threadId": "thread-001",
+  "from": "recruiting@exampletechnologies.com",
+  "to": ["candidate@example.com"],
+  "subject": "Next steps for Product Analyst",
+  "body": "We would like to schedule an interview to discuss the Product Analyst role. Please share your availability.",
+  "receivedAt": "2026-08-26T10:00:00.000Z"
+}

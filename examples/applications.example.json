@@ -1,0 +1,10 @@
+[
+  {
+    "id": "application-001",
+    "jobId": "replace-with-normalized-job-id",
+    "company": "Example Technologies",
+    "title": "Product Analyst",
+    "status": "applied",
+    "recruiterEmails": ["recruiting@exampletechnologies.com"]
+  }
+]
