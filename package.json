@@ -4,6 +4,21 @@
   "private": false,
   "description": "India-first, local-first job search and email tracking agent foundation.",
   "type": "module",
+  "files": [
+    "dist",
+    "schemas",
+    "integrations",
+    "AGENTS.md",
+    "CLAUDE.md",
+    "CODEX.md",
+    "README.md",
+    "LICENSE",
+    "SECURITY.md"
+  ],
+  "exports": {
+    ".": "./dist/index.js",
+    "./platform": "./dist/platform/index.js"
+  },
   "bin": {
     "career-strategy": "dist/cli/index.js"
   },
@@ -11,7 +26,8 @@
     "build": "tsc -p tsconfig.json",
     "test": "vitest run",
     "check": "npm run build && npm test",
-    "dev": "tsx src/cli/index.ts"
+    "dev": "tsx src/cli/index.ts",
+    "protocol:describe": "tsx src/cli/index.ts describe"
   },
   "devDependencies": {
     "@types/node": "^22.0.0",

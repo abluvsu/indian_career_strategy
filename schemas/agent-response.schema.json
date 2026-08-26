@@ -1,0 +1,19 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/abluvsu/indian_career_strategy/schemas/agent-response.schema.json",
+  "title": "Career Strategy Agent Response",
+  "type": "object",
+  "required": ["schemaVersion", "requestId", "ok", "requiresUserApproval", "warnings", "errors"],
+  "properties": {
+    "schemaVersion": { "const": "career-strategy.agent.v1" },
+    "requestId": { "type": "string" },
+    "ok": { "type": "boolean" },
+    "task": { "enum": ["score_job", "match_email"] },
+    "result": {},
+    "confidence": { "type": "number", "minimum": 0, "maximum": 1 },
+    "requiresUserApproval": { "type": "boolean" },
+    "warnings": { "type": "array", "items": { "type": "string" } },
+    "errors": { "type": "array", "items": { "type": "object" } }
+  },
+  "additionalProperties": false
+}

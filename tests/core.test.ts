@@ -3,6 +3,7 @@ import { normalizeJob } from "../src/core/normalize-job.js";
 import { scoreJob } from "../src/core/score-job.js";
 import { matchEmail } from "../src/core/match-email.js";
 import { transitionApplication } from "../src/core/workflow.js";
+import { executeRequest } from "../src/platform/runner.js";
 
 const profile = {
   targetRoles: ["Product Analyst"],
@@ -47,5 +48,37 @@ describe("career strategy core", () => {
     const application = { id: "a1", jobId: "j1", company: "Example Co", title: "Product Analyst", status: "applied" as const };
     expect(transitionApplication(application, "interviewing").status).toBe("interviewing");
     expect(() => transitionApplication(application, "shortlisted")).toThrow("Invalid application transition");
+  });
+
+  it("executes the platform-neutral score request envelope", () => {
+    const response = executeRequest({
+      schemaVersion: "career-strategy.agent.v1",
+      requestId: "request-1",
+      task: "score_job",
+      input: {
+        job: { title: "Product Analyst", company: "Example Co", location: "Bengaluru", description: "SQL analytics", skills: ["SQL"] },
+        profile,
+      },
+    });
+    expect(response.ok).toBe(true);
+    expect(response.requestId).toBe("request-1");
+    expect(response.schemaVersion).toBe("career-strategy.agent.v1");
+  });
+
+  it("fails closed for an invalid platform request", () => {
+    const response = executeRequest({ schemaVersion: "wrong", requestId: "request-2", task: "score_job", input: {} });
+    expect(response.ok).toBe(false);
+    expect(response.errors[0]?.code).toBe("INVALID_REQUEST");
+  });
+
+  it("rejects incomplete profile input instead of guessing", () => {
+    const response = executeRequest({
+      schemaVersion: "career-strategy.agent.v1",
+      requestId: "request-3",
+      task: "score_job",
+      input: { job: { title: "Product Analyst", company: "Example Co" }, profile: {} },
+    });
+    expect(response.ok).toBe(false);
+    expect(response.errors[0]?.code).toBe("INVALID_REQUEST");
   });
 });

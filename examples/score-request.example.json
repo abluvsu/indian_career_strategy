@@ -1,0 +1,23 @@
+{
+  "schemaVersion": "career-strategy.agent.v1",
+  "requestId": "example-score-001",
+  "task": "score_job",
+  "actor": "agent",
+  "input": {
+    "job": {
+      "title": "Product Analyst",
+      "company": "Example Technologies",
+      "location": "Bengaluru",
+      "workMode": "hybrid",
+      "description": "Own product analytics, build SQL models and run experiments.",
+      "skills": ["SQL", "analytics", "experimentation"]
+    },
+    "profile": {
+      "targetRoles": ["Product Analyst"],
+      "locations": ["Bengaluru", "Remote"],
+      "workModes": ["hybrid", "remote"],
+      "skills": ["SQL", "analytics", "experimentation"],
+      "experienceYears": 3
+    }
+  }
+}
